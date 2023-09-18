@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+
+    /* Projects */
+
+    /* Language and Environment */
+    "target": "ES2020",
+    "lib": [
+      "ES2020",
+      "ESNext.AsyncIterable"
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleDetection": "auto",
+    "module": "Node16" /* Specify what module code is generated. */,
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
+    "moduleResolution": "NodeNext" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "pretty": true,
+
+    "typeRoots": [
+      "./node_modules/types",
+      "./src/types"
+    ],
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
+
+    /* Emit */
+    "outDir": "./build" /* Specify an output folder for all emitted files. */,
+    "removeComments": true /* Disable emitting comments. */,
+    "noEmit": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictFunctionTypes": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
+    "noImplicitReturns": true,
+  },
+  
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
+}
