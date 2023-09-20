@@ -24,7 +24,7 @@ export async function uploadImageToS3(image: Express.Multer.File, imageName: str
         await s3.send(new PutObjectCommand(params));
 
     } catch (error) {
-
+        throw new Error("Error uploading image to S3.");
     }
 }
 

@@ -52,14 +52,14 @@ export async function addNewProduct(req: Request, res: Response) {
     const productInfo: IProduct = req.body;
     const randomID = randomBytes(16).toString('hex');
     const randomImageName = randomBytes(16).toString('hex');
-
+    console.log(req.body, req.file);
     try {
         if (!req.file) {
             res.status(401).json({ error: "Product image missing." });
             return;
         };
         await uploadImageToS3(req.file, randomImageName);
-        const newProduct = new Product({ ...productInfo, productID: randomID, imageName: randomImageName });
+        const newProduct = new Product({ ...productInfo, productID: randomID, imageName: randomImageName, imageUrl: " " });
         await newProduct.save();
         res.status(201).json({ newProduct })
     } catch (error) {

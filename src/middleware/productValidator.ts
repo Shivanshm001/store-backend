@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction} from 'express';
 
-import { body, query, validationResult } from 'express-validator';
+import { body, validationResult } from 'express-validator';
 
 export const validateProduct = [
     body('name').notEmpty(),
