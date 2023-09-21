@@ -4,7 +4,6 @@ import {
     deleteProduct,
     filterProducts,
     getAllProducts,
-    getProductCategories,
     getProductsOfCategory,
     getSingleProduct,
     searchProductByName,
@@ -20,10 +19,9 @@ router.get("/", getAllProducts);
 router.get("/search", searchProductByName);
 router.get("/filter", filterProducts);
 router.get("/:id", getSingleProduct);
-router.get("/categories", getProductCategories);
-router.get("/:category", getProductsOfCategory);
+router.get("/category/:category", getProductsOfCategory);
 
-router.post("/", validateProduct, multerUpload.single("image"), addNewProduct);
+router.post("/", multerUpload.single("image"), validateProduct, addNewProduct);
 
 router.put("/:productID", updateProduct);
 

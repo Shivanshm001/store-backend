@@ -13,6 +13,9 @@ logs
 results
 tmp
 
+#Utils
+utils
+
 # Build
 public/css/main.css
 build 

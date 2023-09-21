@@ -12,7 +12,7 @@ const multerUpload = multer({ storage: multerStorage });
 if (envFound.error) throw new Error(`Could not find ${envFile}`);
 
 export const config = {
-    DB_URI: process.env.MONGO_URI || "",
+    STORE_DB_URI: process.env.MONGO_STORE_DB_URI || "",
     PORT: process.env.PORT || 3000,
     AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY || "",
     AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || "",

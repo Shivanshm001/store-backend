@@ -11,7 +11,7 @@ export async function getAllProducts(req: Request, res: Response) {
     try {
         const products = await Product.find({});
         if (products.length <= 0) {
-            res.status(404).json({ error: "No products found." });
+            res.status(404).json({ error: "All products : No products found." });
             return;
         }
         for (const product of products) {
@@ -31,7 +31,7 @@ export async function getSingleProduct(req: Request, res: Response) {
     try {
         const product = await Product.findById(productID);
         if (!product) {
-            res.status(404).json({ error: 'Product not found' });
+            res.status(404).json({ error: 'Single product : Product not found' });
             return;
         }
         const imageUrl = await getImageFromS3(product.imageName);
@@ -77,14 +77,14 @@ export async function deleteProduct(req: Request, res: Response) {
     try {
         const product = await Product.findOne({ productID });
         if (!product) {
-            res.status(404).json({ error: "Product not found." });
+            res.status(404).json({ error: "Delete product : Product not found." });
             return;
         }
 
         await deleteImageFromS3(product.imageName);
         const deletedProduct = await Product.findOneAndDelete({ productID });
         if (deletedProduct) res.status(200).json({ deletedProduct });
-        else res.status(204).json({ error: "Product not found." });
+        else res.status(404).json({ error: "Delete product : Product not found." });
 
     } catch (error) {
         if (error) {
@@ -99,7 +99,7 @@ export async function updateProduct(req: Request, res: Response) {
     try {
         const updatedProduct = await Product.findOneAndUpdate({ productID });
         if (updatedProduct) res.status(200).json({ updatedProduct });
-        else res.status(204).json({ error: "Product not found." });
+        else res.status(204).json({ error: "Update product : Product not found." });
     } catch (error) {
         if (error) {
             console.error(error);
@@ -108,27 +108,19 @@ export async function updateProduct(req: Request, res: Response) {
     }
 }
 
-export async function getProductCategories(req: Request, res: Response) {
-    try {
-        const categories = await Product.distinct('category');
-        console.log(categories);
-        if (categories) res.status(200).json({ categories });
-        else res.status(404).json({ error: "No categories found." });
-    } catch (error) {
-        if (error) {
-            console.error(error);
-            res.status(500).json({ error })
-        }
-    }
-}
 
 
 export async function getProductsOfCategory(req: Request, res: Response) {
     const { category } = req.params;
+
     try {
         const products = await Product.find({ category });
-        if (products) res.status(200).json({ products });
-        else res.status(404).json({ error: `Product in category ${category} not found.` });
+        if (!products) res.status(404).json(`Product in category ${category} not found.`);
+        for (const product of products) {
+            const imageUrl = await getImageFromS3(product.imageName);
+            product.imageUrl = imageUrl;
+        }
+        res.status(200).json({ products });
     } catch (error) {
         if (error) {
             console.error(error);
@@ -142,7 +134,7 @@ export async function searchProductByName(req: Request, res: Response) {
     const { name } = req.query;
     const products = await Product.find({ name: { $regex: name, $options: 'i' } })
     if (products) res.status(200).json({ products });
-    else res.status(404).json({ error: 'Product not found' });
+    else res.status(404).json({ error: 'Product by name : Product not found' });
 };
 
 
@@ -155,7 +147,7 @@ export async function filterProducts(req: Request, res: Response) {
             rating: { $gte: filters?.frating || 1 }
         });
         if (filteredProducts && filterProducts.length > 0) res.status(200).json({ filteredProducts });
-        else res.status(404).json({ error: "No products found." });
+        else res.status(404).json({ error: "Filter products : No products found." });
     } catch (error) {
         if (error) {
             console.error(error);
