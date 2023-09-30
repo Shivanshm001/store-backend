@@ -1,7 +1,9 @@
-import express from 'express';
 import cors from 'cors';
-import { router as rootRouter } from './routes/root/root';
+import express from 'express';
+
 import { router as productRouter } from './routes/products/products';
+import { router as rootRouter } from './routes/root/root';
+import { router as userRouter } from './routes/users/users';
 
 import { Express } from 'express';
 import { config } from './config/config';
@@ -15,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", rootRouter);
+app.use("/api/v1/users", userRouter)
 app.use("/api/v1/products", productRouter);
 
 

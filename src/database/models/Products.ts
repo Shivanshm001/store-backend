@@ -4,7 +4,6 @@ import { Categories } from '../../enums/categories';
 
 interface ProductModel extends IProduct, Document { };
 
-
 const productSchema = new Schema<ProductModel>({
     productID: { type: String, required: true, unique: true },
     name: { type: String, required: true },
@@ -17,9 +16,4 @@ const productSchema = new Schema<ProductModel>({
     price: { type: Number, required: true, min: 0 }
 });
 
-const ProductModel = mongoose.model<ProductModel>('Product', productSchema);
-
-
-export {
-    ProductModel
-}
+export const ProductModel = mongoose.model<ProductModel>('Product', productSchema);

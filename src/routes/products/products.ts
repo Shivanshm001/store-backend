@@ -8,7 +8,7 @@ import {
     getSingleProduct,
     searchProductByName,
     updateProduct
-} from '../../controllers/products/products';
+} from '../../controllers/products/productsController';
 import { validateProduct } from '../../middleware/productValidator';
 import { config } from '../../config/config';
 
