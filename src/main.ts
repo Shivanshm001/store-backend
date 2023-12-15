@@ -1,22 +1,31 @@
 import cors from 'cors';
-import express from 'express';
+import express, { Express } from 'express';
 
+import { router as authRouter } from './routes/auth/auth';
 import { router as productRouter } from './routes/products/products';
 import { router as rootRouter } from './routes/root/root';
 import { router as userRouter } from './routes/users/users';
 
-import { Express } from 'express';
-import { config } from './config/config';
-import { connectDB } from './database/mongoose';
 
+import { config } from './config/config';
+import { corsOptions } from './config/corsOptions';
+
+import { connectDB } from './database/mongoose';
+import { verifyJWT } from './middleware/verifyJWT';
+import cookieParser from 'cookie-parser';
 
 const app: Express = express();
 
-app.use(cors())
-app.use(express.json());
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cookieParser());
+
+
 
 app.use("/", rootRouter);
+app.use("/auth", authRouter);
+// app.use(verifyJWT);
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/products", productRouter);
 

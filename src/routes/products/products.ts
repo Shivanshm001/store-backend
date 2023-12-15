@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import { config } from '../../config/config';
 import {
     addNewProduct,
     deleteProduct,
@@ -8,17 +9,16 @@ import {
     getSingleProduct,
     searchProductByName,
     updateProduct
-} from '../../controllers/products/productsController';
+} from '../../controllers/products/products.controller';
 import { validateProduct } from '../../middleware/productValidator';
-import { config } from '../../config/config';
 
 const { multerUpload } = config;
 const router: Router = express.Router();
 
-router.get("/", getAllProducts);
+router.get("/all", getAllProducts);
 router.get("/search", searchProductByName);
 router.get("/filter", filterProducts);
-router.get("/:id", getSingleProduct);
+router.get("/:productID", getSingleProduct);
 router.get("/category/:category", getProductsOfCategory);
 
 router.post("/", multerUpload.single("image"), validateProduct, addNewProduct);
@@ -30,4 +30,4 @@ router.delete("/:productID", deleteProduct);
 
 export {
     router
-}
+};

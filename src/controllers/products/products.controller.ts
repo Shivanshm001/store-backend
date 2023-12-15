@@ -1,15 +1,19 @@
 import { randomBytes } from 'crypto';
 import { Request, Response } from 'express';
-import { ProductModel as Product } from '../../database/models/Products';
+import { ProductModel as Product, ProductModel } from '../../database/models/Products';
 import { IProduct } from '../../interfaces/IProduct';
 import { deleteImageFromS3, getImageFromS3, uploadImageToS3 } from './productImageHandlers';
 
 
 
 export async function getAllProducts(req: Request, res: Response) {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 6; //Number of items displayed on a single page.
 
     try {
-        const products = await Product.find({});
+        const totalItems = await ProductModel.countDocuments();
+        const totalPages = Math.ceil(totalItems / limit);
+        const products = await Product.find({}).skip((page - 1) * limit).limit(limit);
         if (products.length <= 0) {
             res.status(404).json({ error: "All products : No products found." });
             return;
@@ -18,7 +22,7 @@ export async function getAllProducts(req: Request, res: Response) {
             const imageUrl = await getImageFromS3(product.imageName);
             product.imageUrl = imageUrl;
         }
-        res.status(200).json({ products })
+        res.status(200).json({ products, currentPage: Number(page), totalPages })
 
     } catch (error) {
         if (error) console.error(error);
@@ -29,7 +33,7 @@ export async function getAllProducts(req: Request, res: Response) {
 export async function getSingleProduct(req: Request, res: Response) {
     const { productID } = req.params;
     try {
-        const product = await Product.findById(productID);
+        const product = await Product.findOne({ productID });
         if (!product) {
             res.status(404).json({ error: 'Single product : Product not found' });
             return;
@@ -132,21 +136,29 @@ export async function getProductsOfCategory(req: Request, res: Response) {
 
 export async function searchProductByName(req: Request, res: Response) {
     const { name } = req.query;
-    const products = await Product.find({ name: { $regex: name, $options: 'i' } })
-    if (products) res.status(200).json({ products });
-    else res.status(404).json({ error: 'Product by name : Product not found' });
+    try {
+        const products = await Product.find({ name: { $regex: name, $options: 'i' } })
+        if (products) res.status(200).json({ products });
+        else res.status(404).json({ error: 'Product by name : Product not found' });
+    } catch (error) {
+        res.status(500).json({ error });
+    }
 };
 
 
 export async function filterProducts(req: Request, res: Response) {
-    const filters = { ...req.query };
+    const price = req.query?.price;
+    const company = req.query?.company;
+    const category = req.query?.category;
+    const page = Number(req.query?.page) || 1;
+    const limit = Number(req.query?.limit) || 6;
+
     try {
         const filteredProducts = await Product.find({
-            ...filters,
-            price: { $gte: filters?.price || 0 },
-            rating: { $gte: filters?.frating || 1 }
-        });
-        if (filteredProducts && filterProducts.length > 0) res.status(200).json({ filteredProducts });
+            company, category, price: { $gte: 0, $lte: Number(price) || 10000 },
+        }).skip((page - 1) * limit).limit(limit);
+
+        if (filteredProducts && filterProducts.length > 0) res.status(200).json({ products: filteredProducts });
         else res.status(404).json({ error: "Filter products : No products found." });
     } catch (error) {
         if (error) {

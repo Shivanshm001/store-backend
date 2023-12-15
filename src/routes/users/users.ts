@@ -1,11 +1,11 @@
 import express, { Router } from 'express';
 import { router } from '../root/root';
-import { getUserOfId, deleteUserOfId, updateUserOfId } from '../../controllers/users/usersController'
+import { getUserOfId, deleteUserOfId, updateUserOfId, getAllUsers } from '../../controllers/users/users.controller'
 
-
-router.get("/", getUserOfId);
-router.delete("/", deleteUserOfId)
-router.put("/update", updateUserOfId)
+router.get("/all", getAllUsers)
+router.get("/:userId", getUserOfId);
+router.delete("/:userId", deleteUserOfId)
+router.put("/update/:userId", updateUserOfId)
 
 
 export { router };
