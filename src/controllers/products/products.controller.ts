@@ -159,8 +159,18 @@ export async function filterProducts(req: Request, res: Response) {
 
     try {
         const filteredProducts = await Product.find(query).skip((Number(page) - 1) * Number(limit)).limit(Number(limit));
-        if (filteredProducts && filteredProducts.length > 0) res.status(200).json({ products: filteredProducts });
-        else res.sendStatus(404);
+        if (filteredProducts.length <= 0) {
+            res.status(404).json({ error: "Products not found" });
+            return;
+        }
+        const totalItems = filteredProducts.length;
+        const totalPages = Math.ceil(totalItems / Number(limit));
+
+        for (const product of filteredProducts) {
+            const imageUrl = await getImageFromS3(product.imageName);
+            product.imageUrl = imageUrl;
+        }
+        res.status(200).json({ products: filteredProducts, totalPages, currentPage: page });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: error });
