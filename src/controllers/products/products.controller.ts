@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ProductModel as Product, ProductModel } from '../../database/models/Products';
 import { IProduct } from '../../interfaces/IProduct';
 import { deleteImageFromS3, getImageFromS3, uploadImageToS3 } from './productImageHandlers';
-
+import { isNumber } from 'util';
 
 
 export async function getAllProducts(req: Request, res: Response) {
@@ -147,23 +147,22 @@ export async function searchProductByName(req: Request, res: Response) {
 
 
 export async function filterProducts(req: Request, res: Response) {
-    const price = req.query?.price;
-    const company = req.query?.company;
-    const category = req.query?.category;
-    const page = Number(req.query?.page) || 1;
-    const limit = Number(req.query?.limit) || 6;
+    const query: any = {};
+    const price = req.query.price ?? undefined;
+    const company = req.query.company ?? undefined;
+    const category = req.query.category ?? undefined;
+    const page = req.query.page ?? 1;
+    const limit = req.query.limit ?? 6;
+    if (price) query.price = { $gte: 100, $lte: Number(price) };
+    if (company) query.company = company;
+    if (category) query.category = category;
 
     try {
-        const filteredProducts = await Product.find({
-            company, category, price: { $gte: 0, $lte: Number(price) || 10000 },
-        }).skip((page - 1) * limit).limit(limit);
-
-        if (filteredProducts && filterProducts.length > 0) res.status(200).json({ products: filteredProducts });
-        else res.status(404).json({ error: "Filter products : No products found." });
+        const filteredProducts = await Product.find(query).skip((Number(page) - 1) * Number(limit)).limit(Number(limit));
+        if (filteredProducts && filteredProducts.length > 0) res.status(200).json({ products: filteredProducts });
+        else res.sendStatus(404);
     } catch (error) {
-        if (error) {
-            console.error(error);
-            res.status(500).json({ error })
-        }
+        console.error(error);
+        res.status(500).json({ error: error });
     }
 }
