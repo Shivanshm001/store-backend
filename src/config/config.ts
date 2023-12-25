@@ -24,5 +24,3 @@ export const config = {
     multerStorage,
     multerUpload,
 }
-
-console.log(config.STORE_DB_URI);
