@@ -18,7 +18,7 @@ const router: Router = express.Router();
 router.get("/all", getAllProducts);
 router.get("/search", searchProductByName);
 router.get("/filter", filterProducts);
-router.get("/:productID", getSingleProduct);
+router.get("/product/:productID", getSingleProduct);
 router.get("/category/:category", getProductsOfCategory);
 
 router.post("/", multerUpload.single("image"), validateProduct, addNewProduct);
