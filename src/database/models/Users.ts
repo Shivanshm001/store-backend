@@ -5,7 +5,7 @@ interface UserModel extends IUsers, Document { };
 
 const userSchema = new Schema<UserModel>({
     userId: { type: String, required: true, unique: true },
-    username: { type: String, required: true },
+    username: { type: String, required: true, maxlength: 20 },
     password: { type: String, required: true },
     refreshToken: { type: String, required: true, default: " " },
     wishlist: { type: [String], required: false, default: [] },

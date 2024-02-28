@@ -136,13 +136,21 @@ export async function getProductsOfCategory(req: Request, res: Response) {
 
 export async function searchProductByName(req: Request, res: Response) {
     const { name } = req.query;
-    try {
-        const products = await Product.find({ name: { $regex: name, $options: 'i' } })
-        if (products) res.status(200).json({ products });
-        else res.status(404).json({ error: 'Product by name : Product not found' });
-    } catch (error) {
-        res.status(500).json({ error });
+    function hasWhiteSpace(str: typeof name): boolean {
+        const regex = /^(\s.*|\s*)$/
+        if (typeof str === 'string') { return regex.test(str); }
+        else return true;
     }
+    if (name === undefined || name === null) res.sendStatus(404)
+    else if (hasWhiteSpace(name)) res.sendStatus(404)
+    else
+        try {
+            const products = await Product.find({ name: { $regex: name, $options: 'i' } })
+            if (products && products.length > 0) res.status(200).json({ products });
+            else res.status(404).json({ products: [] });
+        } catch (error) {
+            res.status(500).json({ error });
+        }
 };
 
 

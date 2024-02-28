@@ -9,7 +9,7 @@ import { config } from "../../config/config";
 export async function handleRefreshToken(req: Request, res: Response) {
     const cookies = req.cookies;
     if (!cookies?.jwt) {
-        res.sendStatus(401);
+        res.sendStatus(401); //Unauthorized
         return;
     }
 
@@ -18,7 +18,7 @@ export async function handleRefreshToken(req: Request, res: Response) {
     try {
         const foundUser = await User.findOne({ refreshToken });
         if (!foundUser) {
-            res.sendStatus(403);
+            res.sendStatus(403); 
             return;
         }
 
