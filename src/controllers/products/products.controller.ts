@@ -53,10 +53,9 @@ export async function getSingleProduct(req: Request, res: Response) {
 
 
 export async function addNewProduct(req: Request, res: Response) {
-    const productInfo: IProduct = req.body;
+    const productInfo: Omit<IProduct, "image"> = req.body;
     const randomID = randomBytes(16).toString('hex');
     const randomImageName = randomBytes(16).toString('hex');
-    console.log(req.body, req.file);
     try {
         if (!req.file) {
             res.status(401).json({ error: "Product image missing." });
