@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserModel as User } from "../../database/models/Users";
+import { UserModel as User } from "@/database/models/Users";
 
 export async function handleUserLogout(req: Request, res: Response) {
 

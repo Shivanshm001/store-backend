@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { randomBytes } from "crypto";
 import { Request, Response } from "express";
 
-import { UserModel as User } from "../../database/models/Users";
+import { UserModel as User } from "@/database/models/Users";
 
 
 export async function handleUserRegister(req: Request, res: Response) {

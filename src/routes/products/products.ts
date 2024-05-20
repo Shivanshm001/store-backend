@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { config } from '../../config/config';
+import { config } from '@/config/config';
 import {
     addNewProduct,
     deleteProduct,
@@ -9,8 +9,8 @@ import {
     getSingleProduct,
     searchProductByName,
     updateProduct
-} from '../../controllers/products/products.controller';
-import { validateProduct } from '../../middleware/productValidator';
+} from '@/controllers/products/products.controller';
+import { validateProduct } from '@/middleware/productValidator';
 
 const { multerUpload } = config;
 const router: Router = express.Router();

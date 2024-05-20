@@ -1,4 +1,4 @@
-import { config } from "../../config/config";
+import { config } from "@/config/config";
 import { S3Client, DeleteObjectCommand, DeleteObjectCommandInput, GetObjectCommand, GetObjectCommandInput, PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
@@ -22,9 +22,11 @@ export async function uploadImageToS3(image: Express.Multer.File, imageName: str
             ContentType: image?.mimetype
         }
         await s3.send(new PutObjectCommand(params));
-
+        console.log("Success upload image to S3")
     } catch (error) {
+        console.error(error)
         throw new Error("Error uploading image to S3.");
+
     }
 }
 
@@ -52,7 +54,8 @@ export async function deleteImageFromS3(imageName: string) {
         }
         await s3.send(new DeleteObjectCommand(params));
     } catch (error) {
-
+        console.error(error);
+        throw new Error("Error deleting image from S3 bucket")
     }
 }
 

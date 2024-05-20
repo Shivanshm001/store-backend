@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { IProduct } from "../../interfaces/IProduct";
-import { Categories } from '../../enums/categories';
+import { IProduct } from "@/interfaces/IProduct";
+import { Categories } from '@/enums/categories';
 
 interface ProductModel extends IProduct, Document { };
 

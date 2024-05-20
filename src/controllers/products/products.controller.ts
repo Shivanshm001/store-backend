@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
 import { Request, Response } from 'express';
-import { ProductModel as Product, ProductModel } from '../../database/models/Products';
-import { IProduct } from '../../interfaces/IProduct';
+import { ProductModel as Product, ProductModel } from '@/database/models/Products';
+import { IProduct } from '@/interfaces/IProduct';
 import { deleteImageFromS3, getImageFromS3, uploadImageToS3 } from './productImageHandlers';
 import { isNumber } from 'util';
 

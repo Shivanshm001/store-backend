@@ -1,8 +1,8 @@
 import { Request, Response, CookieOptions } from "express";
-import { verifyJWT } from "../../middleware/verifyJWT";
+import { verifyJWT } from "@/middleware/verifyJWT";
 import jwt, { VerifyErrors, JwtPayload } from 'jsonwebtoken';
-import { UserModel as User } from "../../database/models/Users";
-import { config } from "../../config/config";
+import { UserModel as User } from "@/database/models/Users";
+import { config } from "@/config/config";
 
 
 

@@ -1,6 +1,6 @@
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
 import { NextFunction, Request, Response, Express } from "express";
-import { config } from '../config/config';
+import { config } from '@/config/config';
 
 interface CustomRequest extends Request{
     username: string

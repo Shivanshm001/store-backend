@@ -6,10 +6,7 @@
 
     /* Language and Environment */
     "target": "ES2020",
-    "lib": [
-      "ES2020",
-      "ESNext.AsyncIterable"
-    ],
+    "lib": ["ES2020", "ESNext.AsyncIterable"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "moduleDetection": "auto",
@@ -18,10 +15,7 @@
     "moduleResolution": "NodeNext" /* Specify how TypeScript looks up a file from a given module specifier. */,
     "pretty": true,
 
-    "typeRoots": [
-      "./node_modules/types",
-      "./src/types/*"
-    ],
+    "typeRoots": ["./node_modules/types", "./src/types/*"],
     "resolveJsonModule": true,
     "allowJs": true,
     "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
@@ -40,8 +34,13 @@
     "alwaysStrict": true,
     "skipLibCheck": true,
     "noImplicitReturns": true,
+
+    /* Paths */
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
-  
+
   "include": ["./src/**/*"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

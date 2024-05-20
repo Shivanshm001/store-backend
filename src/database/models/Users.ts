@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { IUsers } from "../../interfaces/IUsers";
+import { IUsers } from "@/interfaces/IUsers";
 interface UserModel extends IUsers, Document { };
 
 

@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import { Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 
-import { config } from '../../config/config';
-import { UserModel as User } from "../../database/models/Users";
+import { config } from '@/config/config';
+import { UserModel as User } from "@/database/models/Users";
 
 
 export async function handleUserLogin(req: Request, res: Response) {
